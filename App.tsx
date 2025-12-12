@@ -3,7 +3,6 @@ import { CATEGORIES, MOCK_PRODUCTS } from './constants';
 import { CartItem, CategoryId, Order } from './types';
 import ProductCard from './components/ProductCard';
 import EstimateModal from './components/EstimateModal';
-import AIAssistant from './components/AIAssistant';
 
 function App() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>(CategoryId.METHOD);
@@ -24,7 +23,7 @@ function App() {
     let total = 0;
     let count = 0;
 
-    Object.entries(cartItems).forEach(([productId, quantity]) => {
+    (Object.entries(cartItems) as [string, number][]).forEach(([productId, quantity]) => {
       if (quantity > 0) {
         const product = MOCK_PRODUCTS.find(p => p.id === productId);
         if (product) {
@@ -86,19 +85,18 @@ function App() {
   };
 
   const handleReset = () => {
-    if (confirm('모든 선택 내역을 초기화하시겠습니까?')) {
-      setCartItems({});
-      setCartOptions({});
-      setClientName('');
-      setDeceasedName('');
-    }
+    // window.confirm removed for better tablet compatibility and immediate action
+    setCartItems({});
+    setCartOptions({});
+    setClientName('');
+    setDeceasedName('');
   };
 
   return (
-    <div className="min-h-screen bg-stone-100 pb-32 font-sans text-stone-900">
+    <div className="min-h-screen bg-stone-100 pb-32 font-sans text-stone-900 print:bg-white print:pb-0">
       
       {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/80 backdrop-blur-md">
+      <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/80 backdrop-blur-md print:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded bg-stone-900 text-white font-serif font-bold">J</div>
@@ -163,7 +161,7 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="mx-auto max-w-5xl px-4 py-6">
+      <main className="mx-auto max-w-5xl px-4 py-6 print:hidden">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-stone-700">
             {CATEGORIES.find(c => c.id === activeCategory)?.label} 선택
@@ -190,7 +188,7 @@ function App() {
       </main>
 
       {/* Sticky Bottom Summary */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-stone-200 bg-white px-4 py-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+      <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-stone-200 bg-white px-4 py-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] print:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="text-xs font-medium text-stone-500">현재 선택 합계 ({cartSummary.count})</span>
@@ -200,14 +198,14 @@ function App() {
           <div className="flex gap-2">
             <button 
               onClick={handleReset}
-              className="rounded-xl border border-stone-300 px-4 py-3 font-semibold text-stone-500 hover:bg-stone-50 hidden sm:block"
+              className="rounded-xl border border-stone-300 px-4 py-3 font-semibold text-stone-500 hover:bg-stone-50 text-sm sm:text-base whitespace-nowrap"
             >
               초기화
             </button>
             <button 
               onClick={() => setIsEstimateOpen(true)}
               disabled={cartSummary.count === 0}
-              className="rounded-xl bg-stone-900 px-8 py-3 font-bold text-white shadow-lg transition hover:bg-stone-800 hover:shadow-xl disabled:bg-stone-300 disabled:shadow-none"
+              className="rounded-xl bg-stone-900 px-8 py-3 font-bold text-white shadow-lg transition hover:bg-stone-800 hover:shadow-xl disabled:bg-stone-300 disabled:shadow-none whitespace-nowrap"
             >
               견적서 확인
             </button>
@@ -224,11 +222,10 @@ function App() {
             deceasedName,
             date: new Date().toISOString()
           }}
-          onClose={() => setIsEstimateOpen(false)} 
+          onClose={() => setIsEstimateOpen(false)}
+          onQuantityChange={handleDirectQuantityChange}
         />
       )}
-
-      <AIAssistant />
     </div>
   );
 }
