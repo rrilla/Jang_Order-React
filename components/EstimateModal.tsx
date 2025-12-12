@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Order } from '../types';
 
 interface EstimateModalProps {
@@ -10,6 +10,14 @@ interface EstimateModalProps {
 const EstimateModal: React.FC<EstimateModalProps> = ({ order, onClose, onQuantityChange }) => {
   const totalAmount = order.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const today = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   const handlePrint = () => {
     window.print();
@@ -31,7 +39,10 @@ const EstimateModal: React.FC<EstimateModalProps> = ({ order, onClose, onQuantit
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-end sm:justify-center bg-black/60 backdrop-blur-sm print:static print:bg-white print:block">
+    <div 
+      className="fixed inset-0 z-50 flex flex-col items-center justify-end sm:justify-center bg-black/60 backdrop-blur-sm print:static print:bg-white print:block"
+      onClick={onClose}
+    >
       {/* Print Specific Style to override all visibility issues */}
       <style>
         {`
@@ -44,7 +55,10 @@ const EstimateModal: React.FC<EstimateModalProps> = ({ order, onClose, onQuantit
       </style>
       
       {/* Modal Content - Wrapped with class for print visibility targeting */}
-      <div className="print-visible-wrapper w-full max-w-3xl sm:max-w-3xl mx-auto">
+      <div 
+        className="print-visible-wrapper w-full max-w-3xl sm:max-w-3xl mx-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex h-[90vh] w-full flex-col rounded-t-2xl bg-white shadow-2xl sm:h-auto sm:max-h-[90vh] sm:rounded-xl print:h-auto print:max-h-none print:w-full print:max-w-full print:rounded-none print:shadow-none print:bg-transparent print:block">
           
           {/* Scrollable Area */}

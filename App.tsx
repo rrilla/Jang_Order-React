@@ -98,9 +98,9 @@ function App() {
       {/* Header */}
       <header className="sticky top-0 z-30 border-b border-stone-200 bg-white/80 backdrop-blur-md print:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-stone-900 text-white font-serif font-bold">J</div>
-            <h1 className="text-xl font-serif font-bold tracking-tight text-stone-900">장오더 <span className="text-sm font-sans font-normal text-stone-500">| 장례지도사 전용</span></h1>
+          <div className="flex items-center gap-2 overflow-hidden">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-stone-900 text-white font-serif font-bold">J</div>
+            <h1 className="text-xl font-serif font-bold tracking-tight text-stone-900 truncate">장오더 <span className="text-sm font-sans font-normal text-stone-500 whitespace-nowrap">| 장례지도사 전용</span></h1>
           </div>
           <div className="text-right text-sm hidden sm:block">
              {/* Desktop inputs */}
@@ -122,18 +122,18 @@ function App() {
         </div>
         
         {/* Mobile inputs (visible only on small screens) */}
-        <div className="sm:hidden px-4 pb-3 flex gap-2">
+        <div className="sm:hidden px-4 pb-3 flex gap-2 w-full">
             <input 
               type="text" 
               placeholder="상주 성함" 
-              className="flex-1 rounded border border-stone-300 px-2 py-1 text-sm focus:border-stone-800 focus:outline-none"
+              className="flex-1 min-w-0 rounded border border-stone-300 px-2 py-1 text-sm focus:border-stone-800 focus:outline-none"
               value={clientName}
               onChange={(e) => setClientName(e.target.value)}
             />
             <input 
               type="text" 
               placeholder="고인 성함" 
-              className="flex-1 rounded border border-stone-300 px-2 py-1 text-sm focus:border-stone-800 focus:outline-none"
+              className="flex-1 min-w-0 rounded border border-stone-300 px-2 py-1 text-sm focus:border-stone-800 focus:outline-none"
               value={deceasedName}
               onChange={(e) => setDeceasedName(e.target.value)}
             />
@@ -188,7 +188,7 @@ function App() {
       </main>
 
       {/* Sticky Bottom Summary */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-stone-200 bg-white px-4 py-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] print:hidden">
+      <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-stone-200 bg-white px-4 pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] print:hidden">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
           <div className="flex flex-col">
             <span className="text-xs font-medium text-stone-500">현재 선택 합계 ({cartSummary.count})</span>
