@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { CATEGORIES, MOCK_PRODUCTS } from './constants';
-import { CartItem, CategoryId, Order } from './types';
+import { CartItem, CategoryId } from './types';
 import ProductCard from './components/ProductCard';
 import EstimateModal from './components/EstimateModal';
 

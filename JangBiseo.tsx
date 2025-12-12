@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 const JangBiseo: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState('screen-home');
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Helper to safely manipulate DOM for the legacy script logic
-  const getEl = (id: string) => document.getElementById(id) as HTMLInputElement | HTMLElement | null;
-  const getVal = (id: string) => (document.getElementById(id) as HTMLInputElement)?.value;
   const setVal = (id: string, val: string) => {
     const el = document.getElementById(id) as HTMLInputElement;
     if (el) el.value = val;
